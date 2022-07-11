@@ -1,8 +1,8 @@
 import { Box, AspectRatio, Center, Stack, Heading, Text, HStack, Image } from "native-base";
 
 const Card = () => (
-  <Box alignItems="center">
-    <Box maxW="80" rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
+  <Box alignItems="center" style={{ width: '100%' }}>
+    <Box maxW={80} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
       borderColor: "coolGray.600",
       backgroundColor: "gray.700"
     }} _web={{

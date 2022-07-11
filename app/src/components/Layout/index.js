@@ -4,12 +4,12 @@ import { Center, View } from 'native-base';
 import Header from "./Header";
 import ToggleDarkMode from "../ToggleDarkMode";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, auth }) => {
   const { height } = useWindowDimensions();
 
   return (
     <View style={{ height }}>
-      <Header />
+      <Header auth={auth} />
       <Center
         px={4}
         flex={1}

@@ -1,7 +1,7 @@
+import Swiper from 'react-native-deck-swiper';
+
 import Card from '../../components/Card';
 import Layout from "../../components/Layout";
-
-import Swiper from 'react-native-deck-swiper';
 
 const cards = [
   {
@@ -22,8 +22,8 @@ const cards = [
 
 ]
 
-const Home = () => (
-  <Layout>
+const Home = ({ auth }) => (
+  <Layout auth={auth}>
     <Swiper
       cards={cards}
       renderCard={(card) => <Card />}
@@ -31,8 +31,10 @@ const Home = () => (
       onSwipedAll={() => {console.log('onSwipedAll')}}
       cardIndex={0}
       backgroundColor={'#4FD0E9'}
-      stackSize={3}
+      stackSize={2}
+      showSecondCard={true}
       verticalSwipe={false}
+      stackSeparation={0}
     />
   </Layout>
 )

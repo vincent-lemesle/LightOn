@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { registerRootComponent } from 'expo';
 import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -20,18 +19,18 @@ const theme = extendTheme({
   },
 });
 
-const Router = () => {
+const Router = ({ auth }) => {
   const [initialRoute, setInitialRoute] = useState('');
 
   return (
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>
         <Stack.Navigator initialRouteKey={initialRoute} screenOptions={{ headerShown: false, headerMode: 'none', animationTypeForReplace: undefined }}>
-          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} />} />
         </Stack.Navigator>
       </NativeBaseProvider>
     </NavigationContainer>
   )
 }
 
-export default registerRootComponent(Router);
+export default Router;
