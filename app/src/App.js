@@ -11,8 +11,6 @@ import { registerRootComponent } from 'expo';
 
 const theme = extendTheme({
   colors: {
-    // Add new color
-    // primary: currentColor,
   },
   config: {
     // Changing initialColorMode to 'dark

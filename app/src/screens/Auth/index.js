@@ -34,7 +34,7 @@ const Auth = ({ auth, setUser }) => {
 
   return (
     <Box
-      style={{ marginTop: 2.5 }}
+      style={{ marginTop: 2.5, backgroundColor: '#2D2F34' }}
       _web={{
         marginLeft: '25%',
         width: width / 2,

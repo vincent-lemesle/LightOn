@@ -12,28 +12,36 @@ const Home = ({ auth }) => {
   const [pageToken, setPageToken] = useState(undefined);
 
   const fetchData = useCallback(async () => {
-    const fetchedData = (await requester.get('/nearby')).data;
-    setData(fetchedData.results.slice(17));
-    setPageToken(fetchedData.next_page_token);
-    setLoading(false);
+    try {
+      const fetchedData = (await requester.get('/nearby')).data;
+      setData(fetchedData.results.slice(17));
+      setPageToken(fetchedData.next_page_token);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const fetchNextPage = useCallback(async () => {
     setLoading(true);
-    const fetchedData = (await requester.get('/nearby', {
-      params: {
-        pageToken: pageToken,
-      }
-    })).data;
-    console.log(fetchedData);
-    setData(fetchedData.results);
-    setPageToken(fetchedData.next_page_token);
-    setLoading(false);
+    try {
+      const fetchedData = (await requester.get('/nearby', {
+        params: {
+          pageToken: pageToken,
+        }
+      })).data;
+      setData(fetchedData.results);
+      setPageToken(fetchedData.next_page_token);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   }, [pageToken]);
 
   useEffect(() => {
     if (!data) {
-      console.log('ici');
       fetchData();
     }
   }, [data])

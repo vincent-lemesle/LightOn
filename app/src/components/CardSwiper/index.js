@@ -11,7 +11,7 @@ const CardSwiper = ({ data, onSwipedAll }) => (
     verticalSwipe={false}
     showSecondCard={true}
     onSwipedAll={() => onSwipedAll()}
-    backgroundColor={'#4FD0E9'}
+    backgroundColor="#37424a"
     renderCard={(item) => <Card data={item} />}
     onSwiped={(cardIndex) => {console.log(cardIndex)}}
   />
