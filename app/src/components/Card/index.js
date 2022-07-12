@@ -1,6 +1,8 @@
 import { Box, AspectRatio, Center, Stack, Heading, Text, HStack, Image } from "native-base";
 
-const Card = () => (
+const googleMapApiKey = 'AIzaSyDfz-OcfyJFfU3PdUUmPNjh1PbAd5JXKp8';
+
+const Card = ({ data }) => (
   <Box alignItems="center" style={{ width: '100%' }}>
     <Box maxW={80} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
       borderColor: "coolGray.600",
@@ -14,7 +16,7 @@ const Card = () => (
       <Box>
         <AspectRatio w="100%" ratio={9 / 9}>
           <Image source={{
-            uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg"
+            uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&key=${googleMapApiKey}&photo_reference=${data.photos[0].photo_reference}`,
           }} alt="image" />
         </AspectRatio>
         <Center bg="violet.500" _dark={{
@@ -30,7 +32,7 @@ const Card = () => (
       <Stack p="4" space={3}>
         <Stack space={2}>
           <Heading size="md" ml="-1">
-            The Garden City
+            {data.name}
           </Heading>
           <Text fontSize="xs" _light={{
             color: "violet.500"

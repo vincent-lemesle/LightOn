@@ -1,42 +1,52 @@
-import Swiper from 'react-native-deck-swiper';
+import { Spinner } from 'native-base';
+import React, { useState, useCallback, useEffect } from "react";
 
-import Card from '../../components/Card';
+import requester from "../../services/requester";
+
 import Layout from "../../components/Layout";
+import CardSwiper from '../../components/CardSwiper';
 
-const cards = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-  {
-    id: 5,
+const Home = ({ auth }) => {
+  const [data, setData] = useState(undefined);
+  const [loading, setLoading] = useState(true);
+  const [pageToken, setPageToken] = useState(undefined);
+
+  const fetchData = useCallback(async () => {
+    const fetchedData = (await requester.get('/nearby')).data;
+    setData(fetchedData.results.slice(17));
+    setPageToken(fetchedData.next_page_token);
+    setLoading(false);
+  }, []);
+
+  const fetchNextPage = useCallback(async () => {
+    setLoading(true);
+    const fetchedData = (await requester.get('/nearby', {
+      params: {
+        pageToken: pageToken,
+      }
+    })).data;
+    console.log(fetchedData);
+    setData(fetchedData.results);
+    setPageToken(fetchedData.next_page_token);
+    setLoading(false);
+  }, [pageToken]);
+
+  useEffect(() => {
+    if (!data) {
+      console.log('ici');
+      fetchData();
+    }
+  }, [data])
+
+  if (loading) {
+    return <Spinner />;
   }
 
-]
-
-const Home = ({ auth }) => (
-  <Layout auth={auth}>
-    <Swiper
-      cards={cards}
-      renderCard={(card) => <Card />}
-      onSwiped={(cardIndex) => {console.log(cardIndex)}}
-      onSwipedAll={() => {console.log('onSwipedAll')}}
-      cardIndex={0}
-      backgroundColor={'#4FD0E9'}
-      stackSize={2}
-      showSecondCard={true}
-      verticalSwipe={false}
-      stackSeparation={0}
-    />
-  </Layout>
-)
+  return (
+    <Layout auth={auth}>
+      <CardSwiper data={data} onSwipedAll={fetchNextPage} />
+    </Layout>
+  )
+}
 
 export default Home;
