@@ -34,13 +34,9 @@ const Auth = ({ auth, setUser }) => {
 
   return (
     <Box
-      style={{ marginTop: 2.5, backgroundColor: '#2D2F34' }}
-      _web={{
-        marginLeft: '25%',
-        width: width / 2,
-      }}
+      style={{ backgroundColor: '#2D2F34', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}
     >
-      <Stack style={{ marginTop: '30%' }} space={4} w="100%" alignItems="center">
+      <Stack space={4} w="50%" alignItems="center">
         {/* <Image alt="icon" source={icon} style={{ width: 201, height: 96, marginBottom: 50 }} /> */}
         <Input
           w={{

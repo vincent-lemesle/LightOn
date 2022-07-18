@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from "react";
 
 import requester from "../../services/requester";
 
-import Layout from "../../components/Layout";
+import Layout from "../../components/Layout/LoadResourceLayout";
 import CardSwiper from '../../components/CardSwiper';
 
 const Movies = ({ auth }) => {

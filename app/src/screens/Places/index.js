@@ -1,59 +1,37 @@
-import { Spinner } from 'native-base';
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback, useState } from "react";
 
 import requester from "../../services/requester";
 
-import Layout from "../../components/Layout";
 import CardSwiper from '../../components/CardSwiper';
+import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
 
 const Places = ({ auth }) => {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
-  const [pageToken, setPageToken] = useState(undefined);
 
-  const fetchData = useCallback(async () => {
-    try {
-      const fetchedData = (await requester.get('/places/nearby')).data;
-      setData(fetchedData.results.slice(17));
-      setPageToken(fetchedData.next_page_token);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const fetchData = async () => {
+    const d = (await requester.get('/places/nearby')).data;
+    setData(d);
+  };
 
   const fetchNextPage = useCallback(async () => {
     setLoading(true);
     try {
       const fetchedData = (await requester.get('/places/nearby', {
-        params: {
-          pageToken: pageToken,
-        }
+        params: { pageToken: data.next_page_token }
       })).data;
-      setData(fetchedData.results);
-      setPageToken(fetchedData.next_page_token);
+      setData(fetchedData);
     } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);
     }
-  }, [pageToken]);
-
-  useEffect(() => {
-    if (!data) {
-      fetchData();
-    }
-  }, [data])
-
-  if (loading) {
-    return <Spinner />;
-  }
+  }, [data]);
 
   return (
-    <Layout auth={auth}>
-      <CardSwiper data={data} onSwipedAll={fetchNextPage} type="place" />
-    </Layout>
+    <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
+      <CardSwiper data={data?.results} onSwipedAll={fetchNextPage} type="place" />
+    </LoadResourceLayout>
   )
 }
 
