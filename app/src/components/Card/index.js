@@ -2,11 +2,14 @@ import { Box, AspectRatio, Center, Stack, Heading, Text, HStack, Image } from "n
 
 const googleMapApiKey = 'AIzaSyDfz-OcfyJFfU3PdUUmPNjh1PbAd5JXKp8';
 
-const Card = ({ data }) => {
-  let picture_ref;
+const Card = ({ data, type }) => {
+  let picture_url;
 
-  if (data.photos && data.photos.length > 0) {
-    picture_ref = data.photos[0].photo_reference;
+  if (type === 'place' && data.photos && data.photos.length > 0) {
+    picture_url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&key=${googleMapApiKey}&photo_reference=${data.photos[0].photo_reference}`;
+  }
+  if (type === 'movie') {
+    picture_url = data.image;
   }
 
   return (
@@ -22,9 +25,7 @@ const Card = ({ data }) => {
       }}>
         <Box>
           <AspectRatio w="100%" ratio={9 / 9}>
-            <Image source={{
-              uri: `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&key=${googleMapApiKey}&photo_reference=${picture_ref}`,
-            }} alt="image" />
+            <Image source={{ uri: picture_url }} alt="card-image" />
           </AspectRatio>
           <Center bg="violet.500" _dark={{
             bg: "violet.400"
@@ -39,7 +40,7 @@ const Card = ({ data }) => {
         <Stack p="4" space={3}>
           <Stack space={2}>
             <Heading size="md" ml="-1">
-              {data.name}
+              {type === 'place' ? data.name : data.title}
             </Heading>
             <Text fontSize="xs" _light={{
               color: "violet.500"

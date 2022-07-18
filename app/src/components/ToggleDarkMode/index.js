@@ -2,6 +2,7 @@ import { HStack, Switch, Text, useColorMode } from "native-base";
 
 const ToggleDarkMode = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <HStack space={2} alignItems="center">
       <Text>Dark</Text>
