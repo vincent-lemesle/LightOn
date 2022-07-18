@@ -5,12 +5,12 @@ import requester from "../../services/requester";
 import CardSwiper from '../../components/CardSwiper';
 import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
 
-const Places = ({ auth }) => {
+const Places = ({ auth, type }) => {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const d = (await requester.get('/places/nearby')).data;
+    const d = (await requester.get('/places/nearby', { params: { type }})).data;
     setData(d);
   };
 
@@ -18,7 +18,7 @@ const Places = ({ auth }) => {
     setLoading(true);
     try {
       const fetchedData = (await requester.get('/places/nearby', {
-        params: { pageToken: data.next_page_token }
+        params: { pageToken: data.next_page_token, type }
       })).data;
       setData(fetchedData);
     } catch (err) {

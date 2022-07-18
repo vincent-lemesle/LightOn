@@ -28,8 +28,11 @@ app.get('/ping', async (req, res, _next) => {
 
 app.get('/places/nearby', async (req, res, _next) => {
   try {
-    const { pageToken } = req.query;
-    let params = `key=${googleMapApiKey}&location=48.818508,2.319620&radius=5000&type=restaurant`;
+    const { pageToken, type } = req.query;
+    if (!type) {
+      throw new Error('Invalid params');
+    }
+    let params = `key=${googleMapApiKey}&location=48.818508,2.319620&radius=5000&type=${type}`;
     if (pageToken) {
       params += `&pagetoken=${pageToken}`;
     }

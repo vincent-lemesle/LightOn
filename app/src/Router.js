@@ -5,7 +5,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from "./screens/Home";
 import Movies from "./screens/Movies";
-import Places from "./screens/Places";
+
+// PLACES
+import Bars from "./screens/Places/Bars";
+import Museums from "./screens/Places/Museums";
+import NightClubs from "./screens/Places/NightClubs";
+import Restaurants from "./screens/Places/Restaurants";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,8 +34,13 @@ const Router = ({ auth }) => {
       <NativeBaseProvider theme={theme}>
         <Stack.Navigator initialRouteKey={initialRoute} screenOptions={{ headerShown: false, headerMode: 'none', animationTypeForReplace: undefined }}>
           <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} />} />
-          <Stack.Screen name="Places" component={(props) => <Places {...props} auth={auth} />} />
+          {/* FILMS */}
           <Stack.Screen name="Movies" component={(props) => <Movies {...props} auth={auth} />} />
+          {/* PLACES */}
+          <Stack.Screen name="Bars" component={(props) => <Bars {...props} auth={auth} />} />
+          <Stack.Screen name="Museums" component={(props) => <Museums {...props} auth={auth} />} />
+          <Stack.Screen name="NightClubs" component={(props) => <NightClubs {...props} auth={auth} />} />
+          <Stack.Screen name="Restaurants" component={(props) => <Restaurants {...props} auth={auth} />} />
         </Stack.Navigator>
       </NativeBaseProvider>
     </NavigationContainer>

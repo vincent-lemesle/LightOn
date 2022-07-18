@@ -1,5 +1,4 @@
-import { Spinner } from 'native-base';
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 
 import requester from "../../services/requester";
 
@@ -10,30 +9,14 @@ const Movies = ({ auth }) => {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = useCallback(async () => {
-    try {
-      const fetchedMovies = (await requester.get('/movies/box-office')).data;
-      setData(fetchedMovies);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!data) {
-      fetchData();
-    }
-  }, [data])
-
-  if (loading) {
-    return <Spinner />;
-  }
+  const fetchData = async () => {
+    const fetchedMovies = (await requester.get('/movies/box-office')).data;
+    setData(fetchedMovies);
+  };
 
   return (
-    <Layout auth={auth}>
-      {data.length > 0 && <CardSwiper data={data} type="movie" />}
+    <Layout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
+      {data?.length > 0 && <CardSwiper data={data} type="movie" />}
     </Layout>
   )
 }
