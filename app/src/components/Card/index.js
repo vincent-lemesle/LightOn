@@ -1,4 +1,4 @@
-import { Box, AspectRatio, Center, Stack, Heading, Text, HStack, Image } from "native-base";
+import {Text, Image, Box, AspectRatio, Center, View} from "native-base";
 
 const googleMapApiKey = 'AIzaSyDfz-OcfyJFfU3PdUUmPNjh1PbAd5JXKp8';
 
@@ -13,58 +13,57 @@ const Card = ({ data, type }) => {
   }
 
   return (
-    <Box alignItems="center" style={{ width: '100%' }}>
-      <Box maxW={80} rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
-        borderColor: "coolGray.600",
-        backgroundColor: "gray.700"
-      }} _web={{
-        shadow: 2,
-        borderWidth: 0
-      }} _light={{
-        backgroundColor: "gray.50"
-      }}>
-        <Box>
-          <AspectRatio w="100%" ratio={9 / 9}>
-            <Image source={{ uri: picture_url }} alt="card-image" />
-          </AspectRatio>
-          <Center bg="violet.500" _dark={{
-            bg: "violet.400"
-          }} _text={{
+    <Box
+      borderRadius="md"
+      style={{
+        flex: 1,
+        width: 350,
+        height: 450,
+        overflow: 'hidden',
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 10,
+      }}
+      _dark={{ bg: '#1f2528' }}
+      _light={{ bg: '#a5a5a5' }}
+    >
+      <Box>
+        <AspectRatio w="100%" ratio={1}>
+          <Image source={{ uri: picture_url }} />
+        </AspectRatio>
+        <Center
+          bg="violet.500"
+          _dark={{ bg: "violet.400" }}
+          _text={{
             color: "warmGray.50",
             fontWeight: "700",
             fontSize: "xs"
-          }} position="absolute" bottom="0" px="3" py="1.5">
-            PHOTOS
-          </Center>
-        </Box>
-        <Stack p="4" space={3}>
-          <Stack space={2}>
-            <Heading size="md" ml="-1">
-              {type === 'place' ? data.name : data.title}
-            </Heading>
-            <Text fontSize="xs" _light={{
-              color: "violet.500"
-            }} _dark={{
-              color: "violet.400"
-            }} fontWeight="500" ml="-0.5" mt="-1">
-              The Silicon Valley of India.
-            </Text>
-          </Stack>
-          <Text fontWeight="400">
-            Bengaluru (also called Bangalore) is the center of India's high-tech
-            industry. The city is also known for its parks and nightlife.
-          </Text>
-          <HStack alignItems="center" space={4} justifyContent="space-between">
-            <HStack alignItems="center">
-              <Text color="coolGray.600" _dark={{
-                color: "warmGray.200"
-              }} fontWeight="400">
-                6 mins ago
-              </Text>
-            </HStack>
-          </HStack>
-        </Stack>
+          }}
+          px="3"
+          py="1.5"
+          bottom="0"
+          position="absolute"
+        >
+          {type.toUpperCase()}
+        </Center>
       </Box>
+      <View style={{ width: '100%', marginHorizontal: '5%', marginVertical: '5%' }}>
+        <Text>
+          {type === 'place' ? data.name : data.title}
+        </Text>
+        {
+          type === 'place' && (
+            <Text>
+              {data.formatted_address}
+            </Text>
+          )
+        }
+      </View>
     </Box>
   )
 }

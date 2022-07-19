@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import Swiper from "react-native-deck-swiper";
-import { Image, Pressable } from "native-base";
+import { Image, Pressable, View } from "native-base";
 import { AdMobInterstitial, setTestDeviceIDAsync } from "expo-ads-admob";
 
 import Card from "../Card";
 import { isMobile } from "../Device";
 
-const CardSwiper = ({ data, type, onSwipedAll = undefined, setExtraData = undefined, buttons }) => {
+const CardSwiper = ({ data, type, onSwipedAll = undefined, setExtraData = undefined, buttons = [] }) => {
   const adTest = async () => {
     await setTestDeviceIDAsync('EMULATOR');
     await AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/4411468910');
@@ -43,27 +43,32 @@ const CardSwiper = ({ data, type, onSwipedAll = undefined, setExtraData = undefi
   }
 
   return (
-    <Swiper
-      cards={data}
-      stackSize={2}
-      cardIndex={0}
-      stackSeparation={0}
-      verticalSwipe={false}
-      showSecondCard={true}
-      cardStyle={{ height: 400 }}
-      backgroundColor={'rgba(0, 0, 0, 0)'}
-      onSwipedAll={onSwipedAll ? () => swipedAll() : undefined}
-      renderCard={(item) => <Card data={item} type={type} />}
-      onSwiped={(cardIndex) => setExtraData(data[cardIndex])}
-    >
-      {
-        buttons.map((b) => (
-          <Pressable onPress={b.onPress}>
-            <Image source={b.icon} style={{ width: 50, height: 50 }}/>
-          </Pressable>
-        ))
-      }
-    </Swiper>
+    <View style={{ flex: 1, height: 600 }}>
+      <Swiper
+        cards={data}
+        stackSize={2}
+        cardIndex={0}
+        stackSeparation={0}
+        verticalSwipe={false}
+        showSecondCard={true}
+        cardHorizontalMargin={0}
+        backgroundColor={'rgba(0, 0, 0, 0)'}
+        cardStyle={{ height: 450, width: 350 }}
+        containerStyle={{ position: 'relative', width: 350, height: 450 }}
+        onSwipedAll={onSwipedAll ? () => swipedAll() : undefined}
+        renderCard={(item) => <Card data={item} type={type} />}
+        onSwiped={(cardIndex) => setExtraData(data[cardIndex])}
+      />
+      <View style={{ marginTop: 100, alignItems: 'center' }}>
+        {
+          buttons.map((b) => (
+            <Pressable onPress={b.onPress}>
+              <Image source={b.icon} style={{ width: 50, height: 50 }}/>
+            </Pressable>
+          ))
+        }
+      </View>
+    </View>
   )
 }
 

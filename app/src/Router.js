@@ -32,13 +32,13 @@ const Router = ({ auth }) => {
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>
         <Stack.Navigator initialRouteKey={initialRoute} screenOptions={{ headerShown: false, headerMode: 'none', animationTypeForReplace: undefined }}>
-          <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} />} />
-          {/* FILMS */}
-          <Stack.Screen name="Movies" component={(props) => <Movies {...props} auth={auth} />} />
+          {/* <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} />} /> */}
           {/* PLACES */}
           <Stack.Screen name="Bars" component={(props) => <Bars {...props} auth={auth} />} />
           <Stack.Screen name="Museums" component={(props) => <Museums {...props} auth={auth} />} />
           <Stack.Screen name="Restaurants" component={(props) => <Restaurants {...props} auth={auth} />} />
+          {/* FILMS */}
+          <Stack.Screen name="Movies" component={(props) => <Movies {...props} auth={auth} />} />
         </Stack.Navigator>
       </NativeBaseProvider>
     </NavigationContainer>
