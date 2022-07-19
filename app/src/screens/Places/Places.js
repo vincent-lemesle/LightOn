@@ -4,6 +4,7 @@ import requester from "../../services/requester";
 
 import CardSwiper from '../../components/CardSwiper';
 import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
+import { AppOpenAd, InterstitialAd, RewardedAd, BannerAd, TestIds } from 'react-native-google-mobile-ads';
 
 const Places = ({ auth, type }) => {
   const [data, setData] = useState(undefined);
@@ -16,6 +17,7 @@ const Places = ({ auth, type }) => {
 
   const fetchNextPage = useCallback(async () => {
     setLoading(true);
+    InterstitialAd.createForAdRequest('ca-app-pub-3940256099942544/4411468910');
     try {
       const fetchedData = (await requester.get('/places/nearby', {
         params: { pageToken: data.next_page_token, type }
@@ -30,7 +32,7 @@ const Places = ({ auth, type }) => {
 
   return (
     <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
-      <CardSwiper data={data?.results} onSwipedAll={fetchNextPage} type="place" />
+      <CardSwiper data={data?.results.slice(10)} onSwipedAll={fetchNextPage} type="place" />
     </LoadResourceLayout>
   )
 }

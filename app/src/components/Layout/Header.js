@@ -1,9 +1,11 @@
 import { signOut } from 'firebase/auth';
 import { Box, Text, Pressable, View } from "native-base";
+import { useNavigation } from "@react-navigation/native";
 
 import ToggleDarkMode from "../ToggleDarkMode";
 
 const Header = ({ auth }) => {
+  const { push } = useNavigation();
 
   return (
     <Box
@@ -13,7 +15,9 @@ const Header = ({ auth }) => {
       style={{ width: '100%', paddingHorizontal: '5%', justifyContent: 'center', height: 60 }}
     >
       <View style={{ flexDirection: 'row' }}>
-        <Text>Light On</Text>
+        <Pressable onPress={() => push('Home')}>
+          <Text>Light On</Text>
+        </Pressable>
         <View style={{ flexDirection: 'row', marginLeft: 'auto' }}>
           <Pressable onPress={() => signOut(auth)}>
             <Text>Sign out</Text>
