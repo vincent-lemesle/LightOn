@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import Swiper from "react-native-deck-swiper";
+import { Image, Pressable } from "native-base";
+import { AdMobInterstitial, setTestDeviceIDAsync } from "expo-ads-admob";
 
 import Card from "../Card";
-import { AdMobInterstitial, setTestDeviceIDAsync } from "expo-ads-admob";
-import {useEffect} from "react";
+import { isMobile } from "../Device";
 
-const CardSwiper = ({ data, type, onSwipedAll = undefined }) => {
+const CardSwiper = ({ data, type, onSwipedAll = undefined, setExtraData = undefined, buttons }) => {
   const adTest = async () => {
     await setTestDeviceIDAsync('EMULATOR');
     await AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/4411468910');
@@ -28,13 +30,18 @@ const CardSwiper = ({ data, type, onSwipedAll = undefined }) => {
   }
 
   useEffect(() => {
-    adTest();
+    if (isMobile) {
+      adTest();
+    }
   }, []);
 
   const swipedAll = async () => {
-    await showInterstitial();
+    if (isMobile) {
+      await showInterstitial();
+    }
     await onSwipedAll();
   }
+
   return (
     <Swiper
       cards={data}
@@ -43,11 +50,20 @@ const CardSwiper = ({ data, type, onSwipedAll = undefined }) => {
       stackSeparation={0}
       verticalSwipe={false}
       showSecondCard={true}
+      cardStyle={{ height: 400 }}
       backgroundColor={'rgba(0, 0, 0, 0)'}
-      onSwiped={(cardIndex) => {console.log(cardIndex)}}
-      renderCard={(item) => <Card data={item} type={type} />}
       onSwipedAll={onSwipedAll ? () => swipedAll() : undefined}
-    />
+      renderCard={(item) => <Card data={item} type={type} />}
+      onSwiped={(cardIndex) => setExtraData(data[cardIndex])}
+    >
+      {
+        buttons.map((b) => (
+          <Pressable onPress={b.onPress}>
+            <Image source={b.icon} style={{ width: 50, height: 50 }}/>
+          </Pressable>
+        ))
+      }
+    </Swiper>
   )
 }
 

@@ -1,28 +1,38 @@
+import Modal from 'react-native-modal';
+import { ScrollView, Text, View } from 'native-base';
 import React, { useCallback, useState } from "react";
 
 import requester from "../../services/requester";
 
 import CardSwiper from '../../components/CardSwiper';
 import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
-import { AppOpenAd, InterstitialAd, RewardedAd, BannerAd, TestIds } from 'react-native-google-mobile-ads';
+
+import CommentIcon from '../../../assets/icon/comment.png';
+import {useWindowDimensions} from "react-native";
+import {isMobile} from "../../components/Device";
 
 const Places = ({ auth, type }) => {
+  const [reviews, setReviews] = useState([]);
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const { height, width } = useWindowDimensions();
 
   const fetchData = async () => {
     const d = (await requester.get('/places/nearby', { params: { type }})).data;
     setData(d);
+    setReviews(d.results[0].reviews)
   };
 
   const fetchNextPage = useCallback(async () => {
     setLoading(true);
-    InterstitialAd.createForAdRequest('ca-app-pub-3940256099942544/4411468910');
     try {
       const fetchedData = (await requester.get('/places/nearby', {
         params: { pageToken: data.next_page_token, type }
       })).data;
       setData(fetchedData);
+      setReviews(fetchedData.results[0].reviews)
     } catch (err) {
       console.log(err);
     } finally {
@@ -30,9 +40,54 @@ const Places = ({ auth, type }) => {
     }
   }, [data]);
 
+  const ModalContainer = () => (
+      <Modal
+        backdropOpacity={0.4}
+        isVisible={isModalOpen}
+        animationPreset="slide"
+        animationIn="slideInRight"
+        animationOut="slideOutLeft"
+        style={{ margin: 0, marginTop: -40 }}
+        onClose={() => setModalOpen(false)}
+        onBackdropPress={() => setModalOpen(false)}
+      >
+        <ScrollView style={{
+          flex: 1,
+          padding: 5,
+          paddingTop: 60,
+          backgroundColor: 'gray',
+          marginTop: isMobile ? 30 : 0,
+          width: isMobile ? width * 0.7 : width * 0.3,
+          marginLeft: isMobile ? width * 0.3 : width * 0.7,
+        }}>
+          {
+            reviews.map((r) => (
+              <View style={{ borderWidth: 2, marginBottom: 20 }}>
+                <Text underline fontSize="md">
+                  {r.author_name}
+                </Text>
+                <Text>
+                  {r.text}
+                </Text>
+              </View>
+            ))
+          }
+        </ScrollView>
+      </Modal>
+  )
+
   return (
     <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
-      <CardSwiper data={data?.results.slice(10)} onSwipedAll={fetchNextPage} type="place" />
+      <ModalContainer />
+      <CardSwiper
+        data={data?.results.slice(10)}
+        onSwipedAll={fetchNextPage} type="place"
+        setExtraData={(d) => setReviews(d.reviews)}
+        buttons={[{
+          icon: CommentIcon,
+          onPress: () => setModalOpen(true),
+        }]}
+      />
     </LoadResourceLayout>
   )
 }

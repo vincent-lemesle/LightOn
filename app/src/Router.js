@@ -9,7 +9,6 @@ import Movies from "./screens/Movies";
 // PLACES
 import Bars from "./screens/Places/Bars";
 import Museums from "./screens/Places/Museums";
-import NightClubs from "./screens/Places/NightClubs";
 import Restaurants from "./screens/Places/Restaurants";
 
 const Stack = createNativeStackNavigator();
@@ -39,7 +38,6 @@ const Router = ({ auth }) => {
           {/* PLACES */}
           <Stack.Screen name="Bars" component={(props) => <Bars {...props} auth={auth} />} />
           <Stack.Screen name="Museums" component={(props) => <Museums {...props} auth={auth} />} />
-          <Stack.Screen name="NightClubs" component={(props) => <NightClubs {...props} auth={auth} />} />
           <Stack.Screen name="Restaurants" component={(props) => <Restaurants {...props} auth={auth} />} />
         </Stack.Navigator>
       </NativeBaseProvider>

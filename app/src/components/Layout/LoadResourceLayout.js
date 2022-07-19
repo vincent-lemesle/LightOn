@@ -34,7 +34,6 @@ const LoadResourceLayout = ({ children, auth, fetchData, loading, setLoading }) 
       <Center
         px={4}
         flex={1}
-        style={{ height: '100%' }}
       >
         {
           loading ? (
