@@ -61,7 +61,7 @@ const Places = ({ auth, type }) => {
           marginLeft: isMobile ? width * 0.3 : width * 0.7,
         }}>
           {
-            reviews.map((r) => (
+            reviews?.map((r) => (
               <View style={{ borderWidth: 2, marginBottom: 20 }}>
                 <Text underline fontSize="md">
                   {r.author_name}

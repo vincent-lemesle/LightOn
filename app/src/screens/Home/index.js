@@ -10,8 +10,6 @@ const Home = ({ auth }) => {
   useEffect(() => {
   }, []);
 
-  useEffect(() => {
-  }, [])
   return (
     <Layout auth={auth} setLoading={setLoading} fetchData={() => {}}>
 
