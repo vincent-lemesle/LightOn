@@ -1,17 +1,17 @@
 import Modal from 'react-native-modal';
+import { useWindowDimensions } from "react-native";
 import { ScrollView, Text, View } from 'native-base';
 import React, { useCallback, useState } from "react";
 
 import requester from "../../services/requester";
 
+import { isMobile } from "../../components/Device";
 import CardSwiper from '../../components/CardSwiper';
 import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
 
 import CommentIcon from '../../../assets/icon/comment.png';
-import {useWindowDimensions} from "react-native";
-import {isMobile} from "../../components/Device";
 
-const Places = ({ auth, type }) => {
+const Places = ({ auth, user, type }) => {
   const [reviews, setReviews] = useState([]);
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,12 @@ const Places = ({ auth, type }) => {
   const { height, width } = useWindowDimensions();
 
   const fetchData = async () => {
-    const d = (await requester.get('/places/nearby', { params: { type }})).data;
+    const d = (await requester.get('/places/nearby', {
+      params: { type },
+      headers: {
+        'Authorization': `Bearer ${user.accessToken}`
+      }
+    })).data;
     setData(d);
     setReviews(d.results[0].reviews)
   };
@@ -29,7 +34,10 @@ const Places = ({ auth, type }) => {
     setLoading(true);
     try {
       const fetchedData = (await requester.get('/places/nearby', {
-        params: { pageToken: data.next_page_token, type }
+        params: { pageToken: data.next_page_token, type },
+        headers: {
+          'Authorization': `Bearer ${user.accessToken}`
+        }
       })).data;
       setData(fetchedData);
       setReviews(fetchedData.results[0].reviews)
@@ -80,8 +88,11 @@ const Places = ({ auth, type }) => {
     <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
       <ModalContainer />
       <CardSwiper
+        user={user}
+        subType={type}
         data={data?.results.slice(10)}
-        onSwipedAll={fetchNextPage} type="place"
+        onSwipedAll={fetchNextPage}
+        type="place"
         setExtraData={(d) => setReviews(d.reviews)}
         buttons={[{
           icon: CommentIcon,

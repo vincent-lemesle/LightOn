@@ -2,7 +2,7 @@ import {Text, Image, Box, AspectRatio, Center, View} from "native-base";
 
 const googleMapApiKey = 'AIzaSyDfz-OcfyJFfU3PdUUmPNjh1PbAd5JXKp8';
 
-const Card = ({ data, type }) => {
+const Card = ({ data, type  }) => {
   let picture_url;
 
   if (type === 'place' && data.photos && data.photos.length > 0) {

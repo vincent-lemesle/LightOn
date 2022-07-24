@@ -1,7 +1,7 @@
 import Places from "./Places";
 
-const Museums = ({ auth }) => (
-  <Places auth={auth} type="museum" />
+const Museums = ({ auth, user }) => (
+  <Places auth={auth} user={user} type="museum" />
 )
 
 export default Museums;

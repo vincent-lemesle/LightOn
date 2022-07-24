@@ -1,7 +1,7 @@
 import Places from "./Places";
 
-const Bars = ({ auth }) => (
-  <Places auth={auth} type="bar" />
+const Bars = ({ auth, user }) => (
+  <Places auth={auth} user={user} type="bar" />
 )
 
 export default Bars;

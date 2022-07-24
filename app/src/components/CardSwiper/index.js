@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
 import Swiper from "react-native-deck-swiper";
 import { Image, Pressable, View } from "native-base";
 import { AdMobInterstitial, setTestDeviceIDAsync } from "expo-ads-admob";
@@ -6,7 +6,24 @@ import { AdMobInterstitial, setTestDeviceIDAsync } from "expo-ads-admob";
 import Card from "../Card";
 import { isMobile } from "../Device";
 
-const CardSwiper = ({ data, type, onSwipedAll = undefined, setExtraData = undefined, buttons = [] }) => {
+import requester from '../../services/requester';
+
+import heartPng from '../../../assets/icon/heart.png';
+import thumbDownPng from '../../../assets/icon/thumbDown.png';
+
+const CardSwiper = ({ user, data, subType, type, onSwipedAll = undefined, setExtraData = undefined, buttons = [] }) => {
+  const [showSwipedComponent, setShowSwipedComponent] = useState({ active: false });
+
+  const like = async (id) => {
+    const d = (await requester.post(`/places/nearby/${id}/like`,
+      { type: subType },
+      {
+      headers: {
+        'Authorization': `Bearer ${user.accessToken}`
+      }
+    })).data;
+  };
+
   const adTest = async () => {
     await setTestDeviceIDAsync('EMULATOR');
     await AdMobInterstitial.setAdUnitID('ca-app-pub-3940256099942544/4411468910');
@@ -42,22 +59,45 @@ const CardSwiper = ({ data, type, onSwipedAll = undefined, setExtraData = undefi
     await onSwipedAll();
   }
 
+  const onSwiped = (cardIndex) => {
+    setExtraData(data[cardIndex]);
+  }
+
+  const onSwipedLeft = async (cardIndex) => {
+    await like(data[cardIndex].place_id);
+    setShowSwipedComponent({ active: true, type: 'left' })
+    const to = setTimeout(() => {
+      setShowSwipedComponent({ active: false });
+      clearTimeout(to);
+    }, 500);
+  }
+
+  const onSwipedRight = () => {
+    setShowSwipedComponent({ active: true, type: 'right' })
+    const to = setTimeout(() => {
+      setShowSwipedComponent({ active: false  });
+      clearTimeout(to);
+    }, 500);
+  }
+
   return (
     <View style={{ flex: 1, height: 600 }}>
       <Swiper
         cards={data}
         stackSize={2}
         cardIndex={0}
+        onSwiped={onSwiped}
         stackSeparation={0}
         verticalSwipe={false}
         showSecondCard={true}
         cardHorizontalMargin={0}
+        onSwipedLeft={onSwipedLeft}
+        onSwipedRight={onSwipedRight}
         backgroundColor={'rgba(0, 0, 0, 0)'}
         cardStyle={{ height: 450, width: 350 }}
-        containerStyle={{ position: 'relative', width: 350, height: 450 }}
         onSwipedAll={onSwipedAll ? () => swipedAll() : undefined}
         renderCard={(item) => <Card data={item} type={type} />}
-        onSwiped={(cardIndex) => setExtraData(data[cardIndex])}
+        containerStyle={{ position: 'relative', width: 350, height: 450 }}
       />
       <View style={{ marginTop: 100, alignItems: 'center' }}>
         {
@@ -68,6 +108,13 @@ const CardSwiper = ({ data, type, onSwipedAll = undefined, setExtraData = undefi
           ))
         }
       </View>
+      {
+        showSwipedComponent.active && (
+          <View style={{ position: 'fixed', alignItems: 'center', justifyContent: 'center', width: 350, height: 450 }}>
+            <Image source={showSwipedComponent.type === 'left' ? heartPng : thumbDownPng} style={{ width: 100, height: 100 }}/>
+          </View>
+        )
+      }
     </View>
   )
 }

@@ -40,25 +40,8 @@ const App = () => {
     if (fetchedUser) {
       console.log(fetchedUser);
       setUser(fetchedUser);
-      /*
-      requester.post('/accounts', {}, {
-        headers: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          'Authorization': `Bearer ${fetchedUser.accessToken}`
-        },
-      }).then(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        setUser(fetchedUser);
-        setIsLoading(false);
-      });
-       */
     } else {
       // User is signed out
-      // ...
-      // setInitialRoute('Auth');
-      // setIsLoading(false);
     }
   });
 
@@ -71,7 +54,7 @@ const App = () => {
   }
 
   return (
-    <Router auth={auth} />
+    <Router auth={auth} user={user} />
   );
 }
 

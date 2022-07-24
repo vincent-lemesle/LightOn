@@ -1,7 +1,7 @@
 import Places from "./Places";
 
-const Restaurants = ({ auth }) => (
-  <Places auth={auth} type="restaurant" />
+const Restaurants = ({ auth, user }) => (
+  <Places auth={auth} user={user} type="restaurant" />
 )
 
 export default Restaurants;
