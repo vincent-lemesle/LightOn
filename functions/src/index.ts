@@ -26,6 +26,35 @@ app.get('/ping', async (req, res, _next) => {
   res.send({ message: 'pong' });
 });
 
+// Express middleware that validates Firebase ID Tokens
+// passed in the Authorization HTTP header.
+// The Firebase ID token needs to be passed as a Bearer
+// token in the Authorization HTTP header like this:
+// `Authorization: Bearer <Firebase ID Token>`.
+// when decoded successfully, the ID Token content will be added as `req.user`.
+const authenticate = async (
+  req: any,
+  res: any,
+  next: any) => {
+  if (!req.headers.authorization ||
+    !req.headers.authorization.startsWith('Bearer ')) {
+    res.status(403).send('Unauthorized');
+    return;
+  }
+  const idToken = req.headers.authorization.split('Bearer ')[1];
+  try {
+    const decodedIdToken = await admin.auth().verifyIdToken(idToken);
+    res.locals.user = decodedIdToken;
+    next();
+    return;
+  } catch (e) {
+    res.status(403).send('Unauthorized');
+    return;
+  }
+};
+
+app.use(authenticate);
+
 app.get('/places/nearby', async (req, res, _next) => {
   try {
     const { pageToken, type } = req.query;
@@ -48,6 +77,7 @@ app.get('/places/nearby', async (req, res, _next) => {
   }
 });
 
+/*
 app.get('/places/nearby/:id', async (req, res, _next) => {
   try {
     const { id } = req.params;
@@ -55,6 +85,53 @@ app.get('/places/nearby/:id', async (req, res, _next) => {
     res.send(places.data);
   } catch (err) {
     console.log(err);
+    res.sendStatus(500);
+  }
+});
+*/
+
+app.get('/places/nearby/like', async (req, res, _next) => {
+  try {
+    const { type } = req.query;
+    const userPlaces = await admin.firestore()
+      .collection('PlaceLike')
+      .where('userId', '==', res.locals.user.uid)
+      .where('type', '==', type)
+      .get();
+    if (userPlaces.empty) {
+      res.send([]);
+    } else {
+      let places: any[] = [];
+      await Promise.all(userPlaces.docs.map(async (place) => {
+        const details = await (axios.get(`https://maps.googleapis.com/maps/api/place/details/json?key=${googleMapApiKey}&place_id=${place.data().id}`));
+        places.push(details.data.result);
+      }))
+      res.send(places);
+    }
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+app.post('/places/nearby/:id/like', async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    const { type } = req.body
+    await admin.firestore().collection('PlaceLike').add({ id, type, userId: res.locals.user.uid });
+    res.send({ message: 'success' });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+app.delete('/places/nearby/:id/like', async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    await admin.firestore().collection('PlaceLike').doc(id).delete();
+    res.send({ message: 'success' });
+  } catch (err) {
     res.sendStatus(500);
   }
 });
