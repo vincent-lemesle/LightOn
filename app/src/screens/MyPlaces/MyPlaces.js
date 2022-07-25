@@ -1,23 +1,22 @@
-import Modal from 'react-native-modal';
-import { useWindowDimensions } from "react-native";
-import { ScrollView, Text, View } from 'native-base';
-import React, { useCallback, useState } from "react";
+import { FlatList, View } from 'native-base';
+import React, { useState, useRef, useCallback } from 'react';
 
 import requester from "../../services/requester";
 
-import { isMobile } from "../../components/Device";
-import CardSwiper from '../../components/CardSwiper';
+
+import Card from '../../components/Card';
+import CommentsModal from '../../components/CommentsModal';
 import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
 
-import CommentIcon from '../../../assets/icon/comment.png';
-import Card from '../../components/Card';
+import Comments from '../../components/Comments';
+import WebCardInformation from '../../components/WebCardInformation';
 
 const Places = ({ auth, user, type }) => {
   const [reviews, setReviews] = useState([]);
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
-
-  const { height, width } = useWindowDimensions();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 })
 
   const fetchData = async () => {
     const d = (await requester.get('/places/nearby/like', {
@@ -26,28 +25,36 @@ const Places = ({ auth, user, type }) => {
         'Authorization': `Bearer ${user.accessToken}`
       }
     })).data;
-    console.log('ICICICICICICI');
-    console.log(d);
     setData(d);
     if (d.length > 0) {
       setReviews(d[0].reviews)
     }
   };
 
+  const onViewableItemsChanged = useCallback((item) => {
+    setReviews(item.changed[0].item.reviews)
+  }, []);
+
   return (
     <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
-      <ScrollView
-        contentContainerStyle={{ alignItems: 'center' }}
-        style={{ height: 500, width: '100%', marginTop: 40 }}
-      >
-        {
-          data?.map((d) => (
+      <CommentsModal reviews={reviews} isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
+      <View style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
+        <FlatList
+          data={data}
+          viewabilityConfig={viewConfigRef.current}
+          showsHorizontalScrollIndicator={false}
+          onViewableItemsChanged={onViewableItemsChanged}
+          style={{ width: '30%', zIndex: 2, height: 700 }}
+          renderItem={({ item }) => (
             <View style={{ width: 350, height: 450, marginBottom: 40 }}>
-              <Card data={d} type="place" />
+              <Card data={item} type="place" />
             </View>
-          ))
-        }
-      </ScrollView>
+          )}
+        />
+        <WebCardInformation>
+          <Comments reviews={reviews} textColor="black"/>
+        </WebCardInformation>
+      </View>
     </LoadResourceLayout>
   )
 }

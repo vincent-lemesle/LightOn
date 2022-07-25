@@ -38,9 +38,9 @@ const Router = ({ auth, user }) => {
         <Stack.Navigator initialRouteKey={initialRoute} screenOptions={{ headerShown: false, headerMode: 'none', animationTypeForReplace: undefined }}>
           {/* <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} />} /> */}
           {/* PLACES */}
-          <Stack.Screen name="Bars" component={(props) => <Bars {...props} auth={auth} user={user} />} />
-          <Stack.Screen name="Museums" component={(props) => <Museums {...props} auth={auth} user={user} />} />
           <Stack.Screen name="Restaurants" component={(props) => <Restaurants {...props} auth={auth} user={user} />} />
+          <Stack.Screen name="Museums" component={(props) => <Museums {...props} auth={auth} user={user} />} />
+          <Stack.Screen name="Bars" component={(props) => <Bars {...props} auth={auth} user={user} />} />
           {/* MY PLACES */}
           <Stack.Screen name="MyBars" component={(props) => <MyBars {...props} auth={auth} user={user} />} />
           <Stack.Screen name="MyMuseums" component={(props) => <MyMuseums {...props} auth={auth} user={user} />} />
