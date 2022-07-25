@@ -48,6 +48,7 @@ const Places = ({ auth, user, type }) => {
     }
   }, [data]);
 
+  console.log(data);
   return (
     <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
       <CommentsModal reviews={reviews} isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
@@ -59,16 +60,18 @@ const Places = ({ auth, user, type }) => {
             subType={type}
             onSwipedAll={fetchNextPage}
             data={data?.results.slice(10)}
-            setExtraData={(d) => setReviews(d.reviews)}
+            setExtraData={(d) => setReviews(d.reviews || [])}
             buttons={(isBrowser && []) || [{
               icon: CommentIcon,
               onPress: () => setModalOpen(true),
             }]}
           />
         </View>
-        <WebCardInformation>
-          <Comments reviews={reviews} textColor="black"/>
-        </WebCardInformation>
+        <View style={{ width: '55%' }}>
+          <WebCardInformation>
+            <Comments reviews={reviews} textColor="black"/>
+          </WebCardInformation>
+        </View>
       </View>
     </LoadResourceLayout>
   )
