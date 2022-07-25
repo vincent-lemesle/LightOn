@@ -1,13 +1,17 @@
 import { useCallback, useEffect } from 'react';
-import { useWindowDimensions } from 'react-native';
-import { Center, ScrollView, Spinner, View } from 'native-base';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Center, Image, Pressable, Spinner, View } from 'native-base';
 
 import Header from "./Header";
 import { WebMenu } from './Menu';
 import { BrowserView, MobileView } from '../Device';
 
+import discoverIcon from '../../../assets/icon/discover.png';
+import { useNavigation } from '@react-navigation/native';
+
 const LoadResourceLayout = ({ children, auth, fetchData, loading, setLoading }) => {
+  const { push } = useNavigation();
+
   const fetchDataWithLoading = useCallback(async () => {
     try {
       setLoading(true);
@@ -63,6 +67,16 @@ const LoadResourceLayout = ({ children, auth, fetchData, loading, setLoading }) 
             )
           }
         </Center>
+        <View
+          style={{
+            display: 'flex', width: '100%', height: 90, backgroundColor: '#1e292e',
+            alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <Pressable onPress={() => push('MobileMenu')}>
+            <Image source={discoverIcon} style={{ width: 40, height: 40 }} />
+          </Pressable>
+        </View>
       </MobileView>
     </View>
   )

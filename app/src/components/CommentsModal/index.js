@@ -14,21 +14,23 @@ const CommentsModal = ({ reviews, isModalOpen, setModalOpen }) => {
       backdropOpacity={0.4}
       isVisible={isModalOpen}
       animationPreset="slide"
-      animationIn="slideInRight"
-      animationOut="slideOutRight"
-      style={{ margin: 0, marginTop: -40 }}
+      animationIn="slideInUp"
+      animationOut="slideOutDown"
       onClose={() => setModalOpen(false)}
+      style={{ margin: 0, marginTop: 300 }}
       onBackdropPress={() => setModalOpen(false)}
     >
-      <ScrollView style={{
-        flex: 1,
-        padding: 5,
-        paddingTop: 60,
-        backgroundColor: 'gray',
-        marginTop: isMobile ? 30 : 0,
-        width: isMobile ? width * 0.7 : width * 0.3,
-        marginLeft: isMobile ? width * 0.3 : width * 0.7,
-      }}>
+      <ScrollView
+        style={{
+          flex: 1,
+          padding: 5,
+          width: '100%',
+          paddingTop: 60,
+          backgroundColor: 'gray',
+          marginTop: isMobile ? 30 : 0,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
         <Comments reviews={reviews} />
       </ScrollView>
     </Modal>

@@ -1,14 +1,14 @@
-import { ScrollView, View } from 'native-base';
-import React, { useCallback, useState } from "react";
+import { View } from 'native-base';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import requester from "../../services/requester";
 
 import Comments from '../../components/Comments';
-import { isBrowser } from '../../components/Device';
 import CardSwiper from '../../components/CardSwiper';
 import CommentsModal from '../../components/CommentsModal';
 import WebCardInformation from '../../components/WebCardInformation';
 import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
+import { BrowserView, isBrowser, MobileView } from '../../components/Device';
 
 import CommentIcon from '../../../assets/icon/comment.png';
 
@@ -48,23 +48,20 @@ const Places = ({ auth, user, type }) => {
     }
   }, [data]);
 
-  console.log(data);
+  useEffect(() => {}, [reviews]);
+
   return (
     <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
-      <CommentsModal reviews={reviews} isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
-      <View style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      {/* BROWSER */}
+      <BrowserView style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <View style={{ width: '30%', zIndex: 2 }}>
           <CardSwiper
             user={user}
             type="place"
             subType={type}
+            data={data?.results}
             onSwipedAll={fetchNextPage}
-            data={data?.results.slice(10)}
             setExtraData={(d) => setReviews(d.reviews || [])}
-            buttons={(isBrowser && []) || [{
-              icon: CommentIcon,
-              onPress: () => setModalOpen(true),
-            }]}
           />
         </View>
         <View style={{ width: '55%' }}>
@@ -72,7 +69,23 @@ const Places = ({ auth, user, type }) => {
             <Comments reviews={reviews} textColor="black"/>
           </WebCardInformation>
         </View>
-      </View>
+      </BrowserView>
+      {/* MOBILE */}
+      <MobileView>
+        <CommentsModal reviews={reviews} isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
+        <CardSwiper
+          user={user}
+          type="place"
+          subType={type}
+          data={data?.results}
+          onSwipedAll={fetchNextPage}
+          setExtraData={(d) => setReviews(d.reviews || [])}
+          buttons={[{
+            icon: CommentIcon,
+            onPress: () => setModalOpen(true),
+          }]}
+        />
+      </MobileView>
     </LoadResourceLayout>
   )
 }

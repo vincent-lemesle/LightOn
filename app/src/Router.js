@@ -14,6 +14,8 @@ import Restaurants from "./screens/Places/Restaurants";
 import MyBars from "./screens/MyPlaces/MyBars";
 import MyMuseums from "./screens/MyPlaces/MyMuseums";
 import MyRestaurants from "./screens/MyPlaces/MyRestaurants";
+// MOBILE MENU
+import { MobileMenu } from './components/Layout/Menu';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +49,8 @@ const Router = ({ auth, user }) => {
           <Stack.Screen name="MyRestaurants" component={(props) => <MyRestaurants {...props} auth={auth} user={user} />} />
           {/* FILMS */}
           <Stack.Screen name="Movies" component={(props) => <Movies {...props} auth={auth} user={user} />} />
+          {/* MOBILE MENU */}
+          <Stack.Screen name="MobileMenu" component={(props) => <MobileMenu />} />
         </Stack.Navigator>
       </NativeBaseProvider>
     </NavigationContainer>

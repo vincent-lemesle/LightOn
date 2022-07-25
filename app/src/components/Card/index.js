@@ -52,7 +52,7 @@ const Card = ({ data, type  }) => {
           {type.toUpperCase()}
         </Center>
       </Box>
-      <View style={{ width: '100%', marginHorizontal: '5%', marginVertical: '5%' }}>
+      <View style={{ width: '90%', marginHorizontal: '5%', marginVertical: '5%' }}>
         <Text>
           {type === 'place' ? data.name : data.title}
         </Text>

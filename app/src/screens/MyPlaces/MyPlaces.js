@@ -9,6 +9,7 @@ import LoadResourceLayout from "../../components/Layout/LoadResourceLayout";
 
 import Comments from '../../components/Comments';
 import WebCardInformation from '../../components/WebCardInformation';
+import { MobileView, BrowserView, isMobile, isBrowser } from '../../components/Device';
 
 const Places = ({ auth, user, type }) => {
   const [reviews, setReviews] = useState([]);
@@ -36,8 +37,8 @@ const Places = ({ auth, user, type }) => {
 
   return (
     <LoadResourceLayout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
-      <CommentsModal reviews={reviews} isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
-      <View style={{ width: '100%', flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
+      {/* BROWSER */}
+      <BrowserView style={{ width: '100%', flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
         <FlatList
           data={data}
           showsHorizontalScrollIndicator={false}
@@ -55,7 +56,23 @@ const Places = ({ auth, user, type }) => {
             <Comments reviews={reviews} textColor="black"/>
           </WebCardInformation>
         </View>
-      </View>
+      </BrowserView>
+      {/* MOBILE */}
+      <MobileView>
+        <CommentsModal reviews={reviews} isModalOpen={isModalOpen} setModalOpen={setModalOpen} />
+        <FlatList
+          data={data}
+          showsHorizontalScrollIndicator={false}
+          viewabilityConfig={viewConfigRef.current}
+          onViewableItemsChanged={onViewableItemsChanged}
+          style={{ width: '30%', zIndex: 2, height: 700 }}
+          renderItem={({ item }) => (
+            <View style={{ width: 350, height: 450, marginBottom: 40 }}>
+              <Card data={item} type="place" />
+            </View>
+          )}
+        />
+      </MobileView>
     </LoadResourceLayout>
   )
 }

@@ -22,7 +22,7 @@ const WebCardInformation = ({ children }) => (
   >
     <ScrollView
       showsHorizontalScrollIndicator={false}
-      _contentContainerStyle={{ width: '100%', margin: '20px 20px 20px 20px' }}
+      _contentContainerStyle={{ width: '100%', padding: '20px 20px 20px 20px' }}
     >
       {children}
     </ScrollView>
