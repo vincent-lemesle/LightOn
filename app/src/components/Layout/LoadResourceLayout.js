@@ -35,16 +35,11 @@ const LoadResourceLayout = ({ children, auth, fetchData, loading, setLoading }) 
     >
       {/* BROWSER */}
       <BrowserView>
-        <LinearGradient
-          end={[1, 0]}
-          start={[0, 0]}
-          style={{ position: 'fixed', width: '20%', height: '100%' }}
-          colors={['rgba(0,0,0,0.8)', 'transparent']}
-        />
+
         <Header auth={auth} />
         <View style={{ display: 'flex', flexDirection: 'row' }}>
-          <WebMenu />
-          <Center px={4} flex={1} style={{ marginTop: '10%', width: '80%', marginLeft: '25%', marginRight: '2.5%' }}>
+          {/* <WebMenu /> */}
+          <Center px={4} flex={1} style={{ marginTop: '10%', width: '80%', marginLeft: '2.5%', marginRight: '2.5%' }}>
             {
               loading ? (
                 <Spinner size="lg" />

@@ -3,7 +3,7 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Home from "./screens/Home";
+import Discover from "./screens/Discover";
 import Movies from "./screens/Movies";
 
 // PLACES
@@ -38,7 +38,7 @@ const Router = ({ auth, user }) => {
     <NavigationContainer>
       <NativeBaseProvider theme={theme}>
         <Stack.Navigator initialRouteKey={initialRoute} screenOptions={{ headerShown: false, headerMode: 'none', animationTypeForReplace: undefined }}>
-          {/* <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} />} /> */}
+          <Stack.Screen name="Home" component={(props) => <Discover {...props} auth={auth} />} />
           {/* PLACES */}
           <Stack.Screen name="Restaurants" component={(props) => <Restaurants {...props} auth={auth} user={user} />} />
           <Stack.Screen name="Museums" component={(props) => <Museums {...props} auth={auth} user={user} />} />
