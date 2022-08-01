@@ -1,21 +1,30 @@
 import { useCallback, useEffect } from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Center, Image, Pressable, Spinner, View } from 'native-base';
 
 import Header from "./Header";
-import { WebMenu } from './Menu';
 import { BrowserView, MobileView } from '../Device';
 
 import discoverIcon from '../../../assets/icon/discover.png';
 import { useNavigation } from '@react-navigation/native';
 
-const LoadResourceLayout = ({ children, auth, fetchData, loading, setLoading }) => {
+const LoadResourceLayout = ({
+  auth,
+  children,
+  loading,
+  setLoading,
+  center = true,
+  logged = true,
+  marginTop = '10%',
+  fetchData = undefined,
+}) => {
   const { push } = useNavigation();
 
   const fetchDataWithLoading = useCallback(async () => {
     try {
       setLoading(true);
-      await fetchData();
+      if (fetchData) {
+        await fetchData();
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -27,19 +36,11 @@ const LoadResourceLayout = ({ children, auth, fetchData, loading, setLoading }) 
     fetchDataWithLoading();
   }, []);
 
-  return (
-    <View
-      _dark={{ bg: '#37424a' }}
-      _light={{ bg: '#c1c1c1' }}
-      style={{ minHeight: '100%' }}
-    >
-      {/* BROWSER */}
-      <BrowserView>
-
-        <Header auth={auth} />
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
-          {/* <WebMenu /> */}
-          <Center px={4} flex={1} style={{ marginTop: '10%', width: '80%', marginLeft: '2.5%', marginRight: '2.5%' }}>
+  const ChildrenContainer = () => (
+    <View style={{ display: 'flex', flexDirection: 'row' }}>
+      {
+        center || loading ? (
+          <Center px={4} flex={1} style={{ marginTop, width: '90%', marginHorizontal: '5%' }}>
             {
               loading ? (
                 <Spinner size="lg" />
@@ -48,7 +49,25 @@ const LoadResourceLayout = ({ children, auth, fetchData, loading, setLoading }) 
               )
             }
           </Center>
-        </View>
+        ) : (
+          <View style={{ marginTop, width: '90%', marginHorizontal: '5%' }}>
+            {children}
+          </View>
+        )
+      }
+    </View>
+  )
+
+  return (
+    <View
+      _dark={{ bg: '#37424a' }}
+      _light={{ bg: '#F2F2F2' }}
+      style={{ minHeight: '100%' }}
+    >
+      {/* BROWSER */}
+      <BrowserView>
+        <Header auth={auth} logged={logged} />
+        <ChildrenContainer />
       </BrowserView>
       {/* MOBILE */}
       <MobileView>

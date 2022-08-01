@@ -1,23 +1,10 @@
+import React, { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { NativeBaseProvider } from "native-base";
-import React, { useEffect, useState } from "react";
-
+import { NativeBaseProvider, Center, Spinner } from 'native-base';
 import Router from "./Router";
 
-import Auth from "./screens/Auth";
-import { extendTheme } from "native-base";
 import { registerRootComponent } from 'expo';
-
-const theme = extendTheme({
-  colors: {
-  },
-  config: {
-    // Changing initialColorMode to 'dark
-    useSystemColorMode: false,
-    initialColorMode: 'dark',
-  },
-});
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA8T8ax79KvJEypVdGqI-OlteI5mCr2rjg',
@@ -34,6 +21,7 @@ const auth = getAuth(app);
 const App = () => {
   // Set an initializing state whilst Firebase connects
   const [user, setUser] = useState(undefined);
+  const [loading, setLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState('');
 
   auth.onAuthStateChanged((fetchedUser) => {
@@ -43,12 +31,15 @@ const App = () => {
     } else {
       // User is signed out
     }
+    setLoading(false);
   });
 
-  if (!user) {
+  if (loading) {
     return (
-      <NativeBaseProvider theme={theme}>
-        <Auth auth={auth} />
+      <NativeBaseProvider>
+        <Center px={4} flex={1} style={{ width: '90%', marginHorizontal: '5%' }}>
+          <Spinner size="lg" />
+        </Center>
       </NativeBaseProvider>
     )
   }
