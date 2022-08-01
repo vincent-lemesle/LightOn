@@ -35,12 +35,15 @@ const Header = ({ auth, logged = true }) => {
           {
             logged ? (
               <>
-                <View style={{ height: 45 }}>
-                  <LocationInput />
-                </View>
+                <Pressable
+                  onPress={() => push('Liked')}
+                  style={{ width: 150, height: 35, marginLeft: 50, backgroundColor: '#de1010', borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Text style={{ fontSize: 15, color: 'black' }}>Liked ♥️</Text>
+                </Pressable>
                 <Pressable
                   onPress={() => push('Discover')}
-                  style={{ width: 150, height: 35, marginLeft: 50, backgroundColor: '#2F2F2F', borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                  style={{ width: 150, height: 35, marginLeft: 10, backgroundColor: '#2F2F2F', borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
                 >
                   <Text style={{ fontSize: 15, color: 'white' }}>Discover</Text>
                   <Image source={Discover2} style={{ width: 20, height: 20, marginLeft: 10 }} resizeMode="contain" />

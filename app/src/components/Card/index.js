@@ -9,7 +9,7 @@ const Card = ({ data, type  }) => {
     picture_url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&key=${googleMapApiKey}&photo_reference=${data.photos[0].photo_reference}`;
   }
   if (type === 'movie') {
-    picture_url = data.image;
+    picture_url = `https://image.tmdb.org/t/p/original/${data.poster_path}`;
   }
 
   return (
@@ -34,7 +34,7 @@ const Card = ({ data, type  }) => {
     >
       <Box>
         <AspectRatio w="100%" ratio={1}>
-          <Image source={{ uri: picture_url }} />
+          <Image source={{ uri: picture_url }} resizeMode="cover" />
         </AspectRatio>
         <Center
           bg="violet.500"

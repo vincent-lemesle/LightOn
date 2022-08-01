@@ -6,6 +6,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Layout from '../../components/Layout/LoadResourceLayout';
 
 const categories = [
+  /*
   {
     route: 'Restaurants',
     title: 'Restaurants',
@@ -56,13 +57,17 @@ const categories = [
     title: 'Tourist Attractions',
     image: 'https://i.insider.com/5d38b0b336e03c401422cdf8?width=750&format=jpeg&auto=webp',
   },
-  /*
+  */
   {
     route: 'Movies',
-    title: 'movies',
+    title: 'Movies',
     image: 'https://media.istockphoto.com/photos/popcorn-and-clapperboard-picture-id1191001701?k=20&m=1191001701&s=612x612&w=0&h=uDszifNzvgeY5QrPwWvocFOUCw8ugViuw-U8LCJ1wu8=',
   },
-   */
+  {
+    route: 'News',
+    title: 'News',
+    image: 'https://www.allcasting.fr/wp-content/uploads/2021/11/news.jpg',
+  },
 ]
 
 const Discover = ({ auth }) => {

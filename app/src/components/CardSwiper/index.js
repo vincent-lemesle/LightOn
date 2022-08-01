@@ -11,18 +11,8 @@ import requester from '../../services/requester';
 import heartPng from '../../../assets/icon/heart.png';
 import thumbDownPng from '../../../assets/icon/thumbDown.png';
 
-const CardSwiper = ({ user, data, subType, type, onSwipedAll = undefined, setExtraData = undefined, buttons = [] }) => {
+const CardSwiper = ({ data, type, like, disLike, onSwipedAll = undefined, setExtraData = undefined, buttons = [] }) => {
   const [showSwipedComponent, setShowSwipedComponent] = useState({ active: false });
-
-  const like = async (id) => {
-    const d = (await requester.post(`/places/nearby/${id}/like`,
-      { type: subType },
-      {
-      headers: {
-        'Authorization': `Bearer ${user.accessToken}`
-      }
-    })).data;
-  };
 
   const adTest = async () => {
     await setTestDeviceIDAsync('EMULATOR');
@@ -64,16 +54,17 @@ const CardSwiper = ({ user, data, subType, type, onSwipedAll = undefined, setExt
   }
 
   const onSwipedLeft = async (cardIndex) => {
-    await like(data[cardIndex].place_id);
     setShowSwipedComponent({ active: true, type: 'left' })
+    await like(data[cardIndex]);
     const to = setTimeout(() => {
       setShowSwipedComponent({ active: false });
       clearTimeout(to);
     }, 500);
   }
 
-  const onSwipedRight = () => {
+  const onSwipedRight = async (cardIndex) => {
     setShowSwipedComponent({ active: true, type: 'right' })
+    await disLike(data[cardIndex]);
     const to = setTimeout(() => {
       setShowSwipedComponent({ active: false  });
       clearTimeout(to);

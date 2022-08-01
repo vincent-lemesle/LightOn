@@ -8,13 +8,13 @@ import { BrowserView } from '../../components/Device';
 import Layout from "../../components/Layout/LoadResourceLayout";
 import WebCardInformation from '../../components/WebCardInformation';
 
-const Movies = ({ auth, user }) => {
+const News = ({ auth, user }) => {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
   const [extraData, setExtraData] = useState("");
 
   const like = async (movie) => {
-    await requester.post(`/movies/${movie.id}/like`, {},
+    await requester.post(`/news/${movie.id}/like`, {},
       {
         headers: {
           'Authorization': `Bearer ${user.accessToken}`
@@ -23,7 +23,7 @@ const Movies = ({ auth, user }) => {
   };
 
   const diLike = async (movie) => {
-    await requester.post(`/movies/${movie.id}/dislike`, {},
+    await requester.post(`/news/${movie.id}/dislike`, {},
       {
         headers: {
           'Authorization': `Bearer ${user.accessToken}`
@@ -32,19 +32,19 @@ const Movies = ({ auth, user }) => {
   };
 
   const fetchData = async () => {
-    const fetchedMovies = (await requester.get(
-      '/movies/trending',
+    const fetchedNews = (await requester.get(
+      '/news',
       {
         headers: {
           'Authorization': `Bearer ${user.accessToken}`
         }
       })).data;
-    setData(fetchedMovies.results);
-    setExtraData(fetchedMovies.results[0].overview || "");
+    setData(fetchedNews);
   };
 
   useEffect(() => {}, [extraData]);
 
+  console.log(data);
   return (
     <Layout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
       <BrowserView style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -52,15 +52,13 @@ const Movies = ({ auth, user }) => {
           {data?.length > 0 && <CardSwiper
             like={like}
             data={data}
-            type="movie"
+            type="news"
             disLike={diLike}
-            setExtraData={(m) => setExtraData(m.overview || "")}
           />}
         </View>
         <View style={{ width: '55%' }}>
           <WebCardInformation>
             <Text fontSize="xl">
-              {extraData}
             </Text>
           </WebCardInformation>
         </View>
@@ -69,4 +67,4 @@ const Movies = ({ auth, user }) => {
   )
 }
 
-export default Movies;
+export default News;
