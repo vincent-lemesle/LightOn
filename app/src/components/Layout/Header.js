@@ -2,9 +2,10 @@ import { signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { Box, Text, Pressable, View, Image } from 'native-base';
 
+import Profile from '../../../assets/icon/profile.png';
 import Discover2 from '../../../assets/icon/discover2.png';
 
-const Header = ({ auth, logged = true }) => {
+const Header = ({ auth, user, logged = true }) => {
   const { push } = useNavigation();
 
   return (
@@ -39,7 +40,7 @@ const Header = ({ auth, logged = true }) => {
                 </Pressable>
                 <Pressable
                   onPress={() => push('Discover')}
-                  style={{ width: 150, height: 35, marginLeft: 10, backgroundColor: '#2F2F2F', borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                  style={{ width: 150, height: 35, marginLeft: 20, backgroundColor: '#2F2F2F', borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
                 >
                   <Text style={{ fontSize: 15, color: 'white' }}>Discover</Text>
                   <Image source={Discover2} style={{ width: 20, height: 20, marginLeft: 10 }} resizeMode="contain" />
@@ -53,11 +54,18 @@ const Header = ({ auth, logged = true }) => {
                 >
                   <Text style={{ fontSize: 15, color: 'white' }}>Sign out</Text>
                 </Pressable>
+                <Pressable
+                  onPress={() => push('Profile')}
+                  style={{ width: 150, height: 35, marginLeft: 20, borderRadius: 40, backgroundColor: '#F2F2F2', borderColor: 'rgba(0, 0, 0, 0.5)', borderWidth: 0.5, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <Text style={{ fontSize: 15 }}>{user?.email}</Text>
+                  <Image source={Profile} style={{ width: 20, height: 20, marginLeft: 10 }} resizeMode="contain" />
+                </Pressable>
               </>
             ) : (
               <Pressable
                 onPress={() => push('Auth')}
-                style={{ width: 150, height: 35, backgroundColor: '#2F2F2F', borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                style={{ width: 175, height: 35, backgroundColor: '#2F2F2F', borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
               >
                 <Text style={{ fontSize: 15, color: 'white' }}>Sign in</Text>
               </Pressable>

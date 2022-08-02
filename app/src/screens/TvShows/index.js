@@ -39,7 +39,7 @@ const TvShows = ({ auth, user }) => {
   };
 
   return (
-    <Layout auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
+    <Layout user={user} auth={auth} fetchData={fetchData} loading={loading} setLoading={setLoading}>
       <CardSwiperContainer
         like={like}
         data={data}

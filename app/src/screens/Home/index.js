@@ -1,26 +1,21 @@
+import React, { useState } from 'react';
 import { Text, View, Image } from 'native-base';
-import React, { useEffect, useState } from 'react';
 
 import Layout from "../../components/Layout/LoadResourceLayout";
 
-const Home = ({ auth, logged = true }) => {
-  const [loaded, setLoaded] = useState(false);
-
+const Home = ({ auth, user, logged = true }) => {
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-  }, []);
-
   return (
-    <Layout marginTop="5%" center={false} auth={auth} setLoading={setLoading} logged={logged}>
+    <Layout user={user} marginTop="5%" center={false} auth={auth} setLoading={setLoading} logged={logged}>
       <Text fontSize="3xl" bold>
         Solution
       </Text>
-      <Text fontSize="6xl" bold style={{ width: '40%' }}>
-        Enter a city and you can see all the activities it offers
+      <Text bold style={{ width: '45%', fontSize: 55, lineHeight: 60 }}>
+        Choose a category and swipe to find what you want
       </Text>
       <Text fontSize="3xl" style={{ width: '40%' }}>
-        Access to activities such as restaurants and nightclubs
+        Access to data such as movies and video games!
       </Text>
       <View style={{ width: '70%', alignItems: 'center', display: 'flex', marginHorizontal: '15%', marginTop: '5%' }}>
         <Text fontSize="4xl" bold>
@@ -32,8 +27,14 @@ const Home = ({ auth, logged = true }) => {
         <Image
           width="80%"
           height={400}
+          style={{ borderRadius: 10, marginTop: '2.5%' }}
+          source={{ uri: 'https://media.gqmagazine.fr/photos/5dea6130061f7b00082f3405/master/pass/Djangounchained.jpg' }}
+        />
+        <Image
+          width="80%"
+          height={400}
           style={{ borderRadius: 10, marginTop: '2.5%', marginBottom: 40 }}
-          source={{ uri: 'https://res.cloudinary.com/hello-tickets/image/upload/c_limit,f_auto,q_auto,w_1300/v1645846296/rg73rgkb4xsiigqzd3ab.jpg' }}
+          source={{ uri: 'https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_auto/ncom/fr_CA/dlc/switch-dlc/cuphead-dlc/rom-bundle/cuphead-and-the-delicious-last-course/image' }}
         />
       </View>
     </Layout>

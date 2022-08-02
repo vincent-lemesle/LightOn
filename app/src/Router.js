@@ -6,11 +6,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { isBrowser } from './components/Device';
 
 import Home from './screens/Home';
-import Auth from "./screens/Auth";
+import Auth from './screens/Auth';
 import Liked from './screens/Liked';
-import Movies from "./screens/Movies";
+import Movies from './screens/Movies';
+import Profile from './screens/Profile';
 import TvShows from './screens/TvShows';
-import Discover from "./screens/Discover";
+import Discover from './screens/Discover';
 import VideoGames from './screens/VideoGames';
 
 const Stack = createNativeStackNavigator();
@@ -42,13 +43,14 @@ const Router = ({ auth, user }) => {
               </>
             ) : (
               <>
-                {isBrowser && <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} />} />}
-                <Stack.Screen name="Discover" component={(props) => <Discover {...props} auth={auth} />} />
+                {isBrowser && <Stack.Screen name="Home" component={(props) => <Home {...props} auth={auth} user={user} />} />}
+                <Stack.Screen name="Discover" component={(props) => <Discover {...props} auth={auth} user={user} />} />
                 {/* FILMS */}
+                <Stack.Screen name="Liked" component={(props) => <Liked {...props} auth={auth} user={user} />} />
                 <Stack.Screen name="Movies" component={(props) => <Movies {...props} auth={auth} user={user} />} />
                 <Stack.Screen name="TvShows" component={(props) => <TvShows {...props} auth={auth} user={user} />} />
+                <Stack.Screen name="Profile" component={(props) => <Profile {...props} auth={auth} user={user} />} />
                 <Stack.Screen name="VideoGames" component={(props) => <VideoGames {...props} auth={auth} user={user} />} />
-                <Stack.Screen name="Liked" component={(props) => <Liked {...props} auth={auth} user={user} />} />
               </>
             )
           }

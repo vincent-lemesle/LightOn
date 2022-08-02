@@ -5,6 +5,7 @@ import { Text, FlatList, View, Pressable, Image } from 'native-base';
 
 import { isMobile } from '../../components/Device';
 import MovieIcon from '../../../assets/icon/movie.png';
+import MusicIcon from '../../../assets/icon/music.png';
 import TvShowIcon from '../../../assets/icon/tv-show.png';
 import VideoGameIcon from '../../../assets/icon/video-game.png';
 
@@ -31,17 +32,24 @@ const categories = [
     route: 'VideoGames',
     title: 'Video Games',
     icon: VideoGameIcon,
+  },
+  {
+    color1: '#c31432',
+    color2: '#240b36',
+    route: 'VideoGames',
+    title: 'Musics',
+    icon: MusicIcon,
   }
 ]
 
-const Discover = ({ auth }) => {
+const Discover = ({ auth, user }) => {
   const [loading, setLoading] = useState(false);
 
   const { name } = useRoute();
   const { push } = useNavigation();
 
   return (
-    <Layout auth={auth} setLoading={setLoading} fetchData={() => {}}>
+    <Layout user={user} auth={auth} setLoading={setLoading}>
       <Text fontSize="4xl">
         What do you want to find out ? 🌎
       </Text>

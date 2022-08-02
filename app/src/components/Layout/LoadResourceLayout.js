@@ -1,15 +1,15 @@
 import { useCallback, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Center, Image, Pressable, Spinner, View } from 'native-base';
 
 import Header from "./Header";
 import { BrowserView, MobileView } from '../Device';
 
 import discoverIcon from '../../../assets/icon/discover.png';
-import { useNavigation } from '@react-navigation/native';
-import { useWindowDimensions } from 'react-native';
 
 const LoadResourceLayout = ({
   auth,
+  user,
   children,
   loading,
   setLoading,
@@ -67,7 +67,7 @@ const LoadResourceLayout = ({
     >
       {/* BROWSER */}
       <BrowserView>
-        <Header auth={auth} logged={logged} />
+        <Header user={user} auth={auth} logged={logged} />
         <ChildrenContainer />
       </BrowserView>
       {/* MOBILE */}
