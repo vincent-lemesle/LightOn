@@ -6,6 +6,7 @@ import { BrowserView, MobileView } from '../Device';
 
 import discoverIcon from '../../../assets/icon/discover.png';
 import { useNavigation } from '@react-navigation/native';
+import { useWindowDimensions } from 'react-native';
 
 const LoadResourceLayout = ({
   auth,
@@ -71,8 +72,7 @@ const LoadResourceLayout = ({
       </BrowserView>
       {/* MOBILE */}
       <MobileView>
-        <Header auth={auth} />
-        <Center px={4} flex={1}>
+        <Center>
           {
             loading ? (
               <Spinner size="lg" />
@@ -83,11 +83,16 @@ const LoadResourceLayout = ({
         </Center>
         <View
           style={{
-            display: 'flex', width: '100%', height: 90, backgroundColor: '#1e292e',
-            alignItems: 'center', justifyContent: 'center',
+            marginTop: 'auto',
+            height: 90,
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#1e292e',
           }}
         >
-          <Pressable onPress={() => push('MobileMenu')}>
+          <Pressable onPress={() => push('Discover')}>
             <Image source={discoverIcon} style={{ width: 40, height: 40 }} />
           </Pressable>
         </View>

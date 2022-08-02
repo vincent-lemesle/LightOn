@@ -5,12 +5,12 @@ import requester from "../../services/requester";
 import Layout from "../../components/Layout/LoadResourceLayout";
 import CardSwiperContainer from '../../components/CardSwiperContainer';
 
-const Movies = ({ auth, user }) => {
+const VideoGames = ({ auth, user }) => {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
   const like = async (movie) => {
-    await requester.post(`/movies/${movie.id}/like`, {},
+    await requester.post(`/video-games/${movie.id}/like`, {},
       {
         headers: {
           'Authorization': `Bearer ${user.accessToken}`
@@ -19,7 +19,7 @@ const Movies = ({ auth, user }) => {
   };
 
   const disLike = async (movie) => {
-    await requester.post(`/movies/${movie.id}/dislike`, {},
+    await requester.post(`/video-games/${movie.id}/dislike`, {},
       {
         headers: {
           'Authorization': `Bearer ${user.accessToken}`
@@ -29,13 +29,13 @@ const Movies = ({ auth, user }) => {
 
   const fetchData = async () => {
     const fetchedMovies = (await requester.get(
-      '/movies/trending',
+      '/video-games/trending',
       {
         headers: {
           'Authorization': `Bearer ${user.accessToken}`
         }
       })).data;
-    setData(fetchedMovies.results);
+    setData(fetchedMovies);
   };
 
   return (
@@ -43,12 +43,12 @@ const Movies = ({ auth, user }) => {
       <CardSwiperContainer
         like={like}
         data={data}
-        type="movie"
+        type="video_game"
         disLike={disLike}
-        resumeKey="overview"
+        resumeKey="description"
       />
     </Layout>
   )
 }
 
-export default Movies;
+export default VideoGames;

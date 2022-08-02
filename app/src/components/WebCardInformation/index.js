@@ -5,7 +5,7 @@ const WebCardInformation = ({ children }) => (
   <View
     style={{
       zIndex: 1,
-      height: 500,
+      height: 450,
       width: '100%',
       elevation: 10,
       borderRadius: 15,

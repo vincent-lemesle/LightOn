@@ -7,10 +7,11 @@ import { isBrowser } from './components/Device';
 
 import Home from './screens/Home';
 import Auth from "./screens/Auth";
-import News from './screens/News';
 import Liked from './screens/Liked';
 import Movies from "./screens/Movies";
+import TvShows from './screens/TvShows';
 import Discover from "./screens/Discover";
+import VideoGames from './screens/VideoGames';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +46,8 @@ const Router = ({ auth, user }) => {
                 <Stack.Screen name="Discover" component={(props) => <Discover {...props} auth={auth} />} />
                 {/* FILMS */}
                 <Stack.Screen name="Movies" component={(props) => <Movies {...props} auth={auth} user={user} />} />
-                <Stack.Screen name="News" component={(props) => <News {...props} auth={auth} user={user} />} />
+                <Stack.Screen name="TvShows" component={(props) => <TvShows {...props} auth={auth} user={user} />} />
+                <Stack.Screen name="VideoGames" component={(props) => <VideoGames {...props} auth={auth} user={user} />} />
                 <Stack.Screen name="Liked" component={(props) => <Liked {...props} auth={auth} user={user} />} />
               </>
             )

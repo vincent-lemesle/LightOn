@@ -3,15 +3,13 @@ import Swiper from "react-native-deck-swiper";
 import { Image, Pressable, View } from "native-base";
 import { AdMobInterstitial, setTestDeviceIDAsync } from "expo-ads-admob";
 
-import Card from "../Card";
-import { isMobile } from "../Device";
-
-import requester from '../../services/requester';
+import Card from '../Card';
+import { isMobile } from '../Device';
 
 import heartPng from '../../../assets/icon/heart.png';
 import thumbDownPng from '../../../assets/icon/thumbDown.png';
 
-const CardSwiper = ({ data, type, like, disLike, onSwipedAll = undefined, setExtraData = undefined, buttons = [] }) => {
+const CardSwiper = ({ data, type, like, disLike, cardIndex, setCardIndex, onSwipedAll = undefined, buttons = [] }) => {
   const [showSwipedComponent, setShowSwipedComponent] = useState({ active: false });
 
   const adTest = async () => {
@@ -50,7 +48,7 @@ const CardSwiper = ({ data, type, like, disLike, onSwipedAll = undefined, setExt
   }
 
   const onSwiped = (cardIndex) => {
-    setExtraData(data[cardIndex]);
+    setCardIndex(cardIndex + 1);
   }
 
   const onSwipedLeft = async (cardIndex) => {

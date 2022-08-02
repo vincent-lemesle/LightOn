@@ -2,14 +2,17 @@ import {Text, Image, Box, AspectRatio, Center, View} from "native-base";
 
 const googleMapApiKey = 'AIzaSyDfz-OcfyJFfU3PdUUmPNjh1PbAd5JXKp8';
 
-const Card = ({ data, type  }) => {
+const Card = ({ data, type }) => {
   let picture_url;
 
   if (type === 'place' && data.photos && data.photos.length > 0) {
     picture_url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1600&key=${googleMapApiKey}&photo_reference=${data.photos[0].photo_reference}`;
   }
-  if (type === 'movie') {
+  if (type === 'movie' || type === 'tv_show') {
     picture_url = `https://image.tmdb.org/t/p/original/${data.poster_path}`;
+  }
+  if (type === 'video_game') {
+    picture_url = data.background_image;
   }
 
   return (
@@ -30,7 +33,7 @@ const Card = ({ data, type  }) => {
         elevation: 10,
       }}
       _dark={{ bg: '#1f2528' }}
-      _light={{ bg: '#a5a5a5' }}
+      _light={{ bg: '#F8F8F8' }}
     >
       <Box>
         <AspectRatio w="100%" ratio={1}>
@@ -54,7 +57,10 @@ const Card = ({ data, type  }) => {
       </Box>
       <View style={{ width: '90%', marginHorizontal: '5%', marginVertical: '5%' }}>
         <Text>
-          {type === 'place' ? data.name : data.title}
+          {type === 'place' && data.name}
+          {type === 'movie' && data.title}
+          {type === 'tv_show' && data.name}
+          {type === 'video_game' && data.name}
         </Text>
         {
           type === 'place' && (

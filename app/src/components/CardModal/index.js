@@ -2,39 +2,36 @@ import React from 'react';
 import { isMobile } from '../Device';
 import Modal from 'react-native-modal';
 import { ScrollView } from 'native-base';
-import { useWindowDimensions } from 'react-native';
 
-import Comments from '../Comments';
-
-const CommentsModal = ({ reviews, isModalOpen, setModalOpen }) => {
-  const { width } = useWindowDimensions();
-
+const CardModal = ({ children, isModalOpen, setModalOpen }) => {
   return (
     <Modal
       backdropOpacity={0.4}
       isVisible={isModalOpen}
       animationPreset="slide"
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
       onClose={() => setModalOpen(false)}
-      style={{ margin: 0, marginTop: 300 }}
       onBackdropPress={() => setModalOpen(false)}
+      style={{ margin: 0, marginTop: isMobile ? 100 : 0 }}
+      animationIn={isMobile ? 'slideInUp' : 'slideInRight'}
+      animationOut={isMobile ? 'slideOutDown' : 'slideOutRight'}
     >
       <ScrollView
         style={{
           flex: 1,
           padding: 5,
-          width: '100%',
           paddingTop: 60,
-          backgroundColor: 'gray',
+          marginLeft: 'auto',
+          backgroundColor: '#F8F8F8',
           marginTop: isMobile ? 30 : 0,
+          width: isMobile ? '100%' : '30%',
+          marginBottom: !isMobile ? 'auto' : 0,
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Comments reviews={reviews} />
+        {children}
       </ScrollView>
     </Modal>
   )
 };
 
-export default CommentsModal;
+export default CardModal;

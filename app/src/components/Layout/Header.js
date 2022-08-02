@@ -2,10 +2,6 @@ import { signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { Box, Text, Pressable, View, Image } from 'native-base';
 
-import ToggleDarkMode from "../ToggleDarkMode";
-import { LinearGradient } from 'expo-linear-gradient';
-
-import LocationInput from '../LocationInput';
 import Discover2 from '../../../assets/icon/discover2.png';
 
 const Header = ({ auth, logged = true }) => {
@@ -51,7 +47,7 @@ const Header = ({ auth, logged = true }) => {
                 <Pressable
                   onPress={async () => {
                     await signOut(auth)
-                    push('Auth');
+                    window.location.reload();
                   }}
                   style={{ width: 150, height: 35, backgroundColor: '#2F2F2F', marginLeft: 20, borderRadius: 40, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
                 >

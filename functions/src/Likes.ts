@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const movieApiKey = 'b6ff291b53cbf5425a75a801e778c2bb';
-const newsApiKey = '36a127b3-a6e1-43d0-9a2a-ad9e5ea9af38';
+const videoGamesApiKey = '00d5268ed7b3454fbf141f34b8859ba2';
 
 export const getLiked = async (userId: string, firestore: any) => {
   const likes = await firestore
@@ -18,10 +18,13 @@ export const getLiked = async (userId: string, firestore: any) => {
     if (data.type === 'movie') {
       details = await axios.get(`https://api.themoviedb.org/3/movie/${data.id}?api_key=${movieApiKey}`);
     }
-    if (data.type === 'newe') {
-      details = await axios.get(`http://eventregistry.org/api/v1/article/getArticle?apiKey${newsApiKey}&articleUri=${data.id}`);
+    if (data.type === 'tv_show') {
+      details = await axios.get(`https://api.themoviedb.org/3/tv/${data.id}?api_key=${movieApiKey}`);
     }
-    likesWithDetails.push(details?.data || {});
+    if (data.type === 'video_game') {
+      details = await axios.get(`https://api.rawg.io/api/games/${data.id}?key=${videoGamesApiKey}`);
+    }
+    likesWithDetails.push({ ...details?.data, type: data.type } || {});
   }))
   return likesWithDetails;
 }

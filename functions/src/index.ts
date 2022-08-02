@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as admin from 'firebase-admin';
@@ -6,8 +5,9 @@ import * as bodyParser from 'body-parser';
 import * as functions from 'firebase-functions';
 
 import { getLiked } from './Likes';
-import { getLikedNews, getNews, likeNews, dislikeNews } from "./News";
-import { getLikedMovies, getMovies, likeMovie, dislikeMovie } from './Movies';
+import { getMovies, likeMovie, dislikeMovie } from './Movies';
+import { getTvShows, likeTvShow, dislikeTvShow } from './TvShows';
+import { getVideoGames, likeVideoGame, dislikeVideoGame} from "./VideoGames";
 
 const databaseURL = 'https://social-network-b2616-default-rtdb.europe-west1.firebasedatabase.app';
 
@@ -65,16 +65,6 @@ app.get('/movies/trending', async (req, res, _next) => {
   }
 });
 
-app.get('/movies/likes', async (req, res, _next) => {
-  try {
-    const movies = await getLikedMovies(res.locals.user.uid, admin.firestore());
-    res.send(movies);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-
 app.post('/movies/:id/like', async (req, res, _next) => {
   try {
     const { id } = req.params;
@@ -97,22 +87,9 @@ app.post('/movies/:id/dislike', async (req, res, _next) => {
   }
 });
 
-app.get('/news', async (req, res, _next) => {
+app.get('/tv-shows/trending', async (req, res, _next) => {
   try {
-    console.log('ICI');
-    const news = await getNews();
-    console.log('LA');
-    console.log(news);
-    res.send(news);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-
-app.get('/news/likes', async (req, res, _next) => {
-  try {
-    const movies = await getLikedNews(res.locals.user.uid, admin.firestore());
+    const movies = await getTvShows();
     res.send(movies);
   } catch (err) {
     console.log(err);
@@ -120,10 +97,10 @@ app.get('/news/likes', async (req, res, _next) => {
   }
 });
 
-app.post('/news/:id/like', async (req, res, _next) => {
+app.post('/tv-shows/:id/like', async (req, res, _next) => {
   try {
     const { id } = req.params;
-    await likeNews(id, res.locals.user.uid, admin.firestore());
+    await likeTvShow(id, res.locals.user.uid, admin.firestore());
     res.send({ message: 'ok' });
   } catch (err) {
     console.log(err);
@@ -131,10 +108,42 @@ app.post('/news/:id/like', async (req, res, _next) => {
   }
 });
 
-app.post('/news/:id/dislike', async (req, res, _next) => {
+app.post('/tv-shows/:id/dislike', async (req, res, _next) => {
   try {
     const { id } = req.params;
-    await dislikeNews(id, res.locals.user.uid, admin.firestore());
+    await dislikeTvShow(id, res.locals.user.uid, admin.firestore());
+    res.send({ message: 'ok' });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+app.get('/video-games/trending', async (req, res, _next) => {
+  try {
+    const movies = await getVideoGames();
+    res.send(movies);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+app.post('/video-games/:id/like', async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    await likeVideoGame(id, res.locals.user.uid, admin.firestore());
+    res.send({ message: 'ok' });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
+app.post('/video-games/:id/dislike', async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    await dislikeVideoGame(id, res.locals.user.uid, admin.firestore());
     res.send({ message: 'ok' });
   } catch (err) {
     console.log(err);
